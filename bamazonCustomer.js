@@ -6,9 +6,23 @@ var connection = mysql.createConnection({
     port: 3306,
     user: 'root',
     password: 'PlantLady!3735',
-    database: bamazon,
+    database: 'bamazon',
 });
 
 connection.connect(function(err){
     if(err) throw err;
-})
+    productSearch();
+});
+
+function productSearch(){
+    inquirer
+    .prompt({
+        name: 'action',
+        type:'list',
+        message:'Welcome to bamazon services! Would you like to buy anything today?',
+        choices: [
+            'Yes',
+            'No'
+        ]
+    })
+}
