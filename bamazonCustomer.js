@@ -19,10 +19,26 @@ function productSearch(){
     .prompt({
         name: 'action',
         type:'list',
-        message:'Welcome to bamazon services! Would you like to buy anything today?',
+        message:'Welcome to bamazon services! What would you like to do today?',
         choices: [
-            'Yes',
-            'No'
+            'I would like to buy some products',
+            'No, I\'m not in the mood, please get me out of here.'
         ]
     })
+
+    .then(function(answer){
+        switch(answer.action){
+            case "Yes,I would like to buy some products":
+                productId();
+                break;
+
+            case "Thank you for giving the product id, now how many units of this product would you like?":
+                unitNumber();
+                break;
+
+            case 'No, I\'m not in the mood, please get me out of here':
+                connection.end();
+                break;
+        }
+    });
 }
