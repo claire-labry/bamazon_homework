@@ -11,34 +11,78 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err){
     if(err) throw err;
-    productSearch();
+    productList();
 });
 
-function productSearch(){
-    inquirer
-    .prompt({
-        name: 'action',
-        type:'list',
-        message:'Welcome to bamazon services! What would you like to do today?',
-        choices: [
-            'I would like to buy some products',
-            'No, I\'m not in the mood, please get me out of here.'
-        ]
-    })
+function productList(){
+    connection.query('SELECT * FROM products', function (err,res){
+        if(err)throw err;
+        console.log('---------------------------------------');
+        console.log(' +++ WELCOME TO THE bAMAZON STORE! +++ ');
+        console.log('---------------------------------------');
 
-    .then(function(answer){
-        switch(answer.action){
-            case "Yes,I would like to buy some products":
-                productId();
-                break;
-
-            case "Thank you for giving the product id, now how many units of this product would you like?":
-                unitNumber();
-                break;
-
-            case 'No, I\'m not in the mood, please get me out of here':
-                connection.end();
-                break;
+        for(var i = 0; i<res.length; i++){
+            console.log('Product ID: ' + res[i].item_id + 
+            ' || Product Name: ' + res[i].product_name + 
+            ' || Department: ' + res[i].department_name + 
+            ' || Price: ' + res[i].price + 
+            ' || In Stock: ' + res[i].stock_quanity);
+            console.log('------------------------------------------------------------------------------------------------');
         }
-    });
-}
+        inquirer
+        .prompt({
+            name: 'action',
+            type:'list',
+            message:'Would you like to buy some products today?',
+            choices:[
+                'Yes,I would like to buy some products',
+                'No, I\'m not in the mood to buy anything, please get me out of here'
+            ]
+            
+        })
+    
+        .then(function(answer){
+            switch(answer.action){
+                case 'Yes,I would like to buy some products':
+                    productId();
+                    break;
+    
+                case 'No, I\'m not in the mood to buy anything, please get me out of here':
+                    connection.end();
+                    break;
+            }
+        });
+        function productId(){
+            inquirer
+            .prompt([
+            {
+               name:'id',
+                type: 'input',
+                message: 'Great! What is the product id?',
+                validate: function(value){
+                    if(isNaN(value) === false && parseInt(value) <= res.length && parseInt(value) > 0){
+                        return true;
+                    } else{
+                        return false;
+                    }
+                }
+            },
+            {   name: 'quanity',
+                type: 'input',
+                message: 'Thank you for the id! How many products would you like to buy?',
+                validate: function(value){
+                    if(isNaN(value) === false){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            }
+        ])
+
+        .then(function(answer){
+
+            })
+        };
+    })
+};
