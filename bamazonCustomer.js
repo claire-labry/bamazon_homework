@@ -48,6 +48,7 @@ function productList(){
                     break;
     
                 case 'No, I\'m not in the mood to buy anything, please get me out of here':
+                    console.log('Okay, sorry to see you go!');
                     connection.end();
                     break;
             }
@@ -84,14 +85,51 @@ function productList(){
 
             connection.query ('SELECT item_id, product_name, price, stock_quanity FROM products WHERE ?', {item_id: answer.id}, function(err,res){
                 if(err)throw err;
-
+        
                 if (res[0].stock_quanity >= answer.quanity){
                     
                     var inStock = res[0].stock_quanity - answer.quanity;
-    
+                    var totalPrice = answer.quanity * res[0].price;
+        
+                    connection.query(`UPDATE products SET stock_quanity = ${inStock} WHERE item_id = ${answer.id}`, function (err,res){
+                        if (err) throw err;
+        
+                        console.log(`Your total for today is: $${totalPrice}`);
+                        console.log(`Total Inventory left: ${inStock}`);
+        
+                        buyMore();
+                    });
                  } 
+        
+                    else{
+                        console.log('Insufficent quanity!');
+                        buyMore();
+                    }
                 });
             })
-        };
-    })
+         };
+        
+         function buyMore(){
+             inquirer
+             .prompt([
+                 {
+                     name: 'continue',
+                     type: 'confirm',
+                     message: 'Are you interested in buying more products?'
+                 }
+             ])
+             .then(function(answer){
+                 if(answer.continue){
+                     productList();
+                 } else{
+                     connection.query('SELECT * FROM products', function(err){
+                        if(err) throw err;
+                     });
+                     console.log('Thank you for shopping with bamazon! See you next time!');
+                     connection.end();
+                     
+                }
+             }) 
+         }
+    });
 };
