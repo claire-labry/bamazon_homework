@@ -31,19 +31,19 @@ function managerList() {
       .then(function(answer) {
         switch (answer.action) {
         case "View Products for Sale":
-          artistSearch();
+          productSale();
           break;
   
-        case "Find all artists who appear more than once":
-          multiSearch();
+        case "View Low Inventory":
+          lowInventory();
           break;
   
-        case "Find data within a specific range":
-          rangeSearch();
+        case "Add to Inventory":
+          addInventory();
           break;
   
-        case "Search for a specific song":
-          songSearch();
+        case "Add New Product":
+          addProduct();
           break;
   
         case "exit":
