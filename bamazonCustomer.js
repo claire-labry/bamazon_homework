@@ -120,7 +120,7 @@ function productList(){
              ])
              .then(function(answer){
                  if(answer.continue){
-                     productList();
+                     productId();
                  } else{
                      connection.query('SELECT * FROM products', function(err){
                         if(err) throw err;
