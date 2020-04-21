@@ -86,3 +86,33 @@ function lowInventory(){
     managerList();
   });
 }
+
+function addInventory(){
+  inquirer
+  .prompt([
+    {
+      name:'id',
+      type: 'input',
+       message: 'Please give me the id of the product that you would like to add inventory to.',
+       validate: function(value){
+           if(isNaN(value)){
+               return true;
+           } else{
+
+               return false;
+           }
+       }
+   },
+   {   name: 'quanity',
+       type: 'input',
+       message: 'How much inventory would you like to add?',
+       validate: function(value){
+           if(isNaN(value)){
+               return true;
+           } else {
+               return false;
+           }
+       }
+   }
+]);
+} 
