@@ -58,5 +58,5 @@ INSERT INTO products (product_name, department_name, price, stock_quanity)
 VALUES ("Gardening Pots","Garden", 10.95, 85);
 
 -- Product 10: Soccer Ball-- 
-INSERT INTO products (product_name, department_name, price, stock_quanity)
+INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("Soccer Ball","Sports", 16.99, 150);

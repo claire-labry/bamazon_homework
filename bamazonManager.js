@@ -20,13 +20,13 @@ function managerList() {
       .prompt({
         name: "action",
         type: "list",
-        message: "Hello bAmazon Manager! What would you like to do today?",
+        message: "Hello bAmazon Manager! What would you like to do?",
         choices: [
           "View Products for Sale",
           "View Low Inventory",
           "Add to Inventory",
           "Add New Product",
-          "exit"
+          "Exit"
         ]
       })    
       .then(function(answer) {
@@ -47,7 +47,7 @@ function managerList() {
           addProduct();
           break;
   
-        case "exit":
+        case "Exit":
           connection.end();
           break;
         }
@@ -66,6 +66,23 @@ function productSale(){
       );
     }
     console.log(table.toString());
+    managerList();
   });
 }
 
+function lowInventory(){
+  connection.query('SELECT * FROM products WHERE stock_quanity <=5', function (err,res){
+    if(err)throw err;
+    var table = new Table({
+      head: ['Product ID', 'Product Name', 'Department', 'Price', 'In Stock'],
+      colWidths: [13, 45, 16, 11, 11]
+    });
+
+    for(var i = 0; i<res.length; i++){
+        table.push([res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quanity],
+      );
+    }
+    console.log(table.toString());
+    managerList();
+  });
+}

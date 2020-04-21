@@ -85,6 +85,7 @@ function productList(){
 
             connection.query ('SELECT item_id, product_name, price, stock_quanity FROM products WHERE ?', {item_id: answer.id}, function(err,res){
                 if(err)throw err;
+
         
                 if (res[0].stock_quanity >= answer.quanity){
                     
