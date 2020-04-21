@@ -1,5 +1,6 @@
 var mysql = require ('mysql');
 var inquirer = require('inquirer');
+var Table = require ('cli-table3') 
 
 var connection = mysql.createConnection({
     host: 'localhost',
@@ -52,3 +53,19 @@ function managerList() {
         }
       });
   }
+function productSale(){
+  connection.query('SELECT * FROM products', function (err,res){
+    if(err)throw err;
+    var table = new Table({
+      head: ['Product ID', 'Product Name', 'Department', 'Price', 'In Stock'],
+      colWidths: [13, 45, 16, 11, 11]
+    });
+
+    for(var i = 0; i<res.length; i++){
+        table.push([res[i].item_id, res[i].product_name, res[i].department_name, res[i].price, res[i].stock_quanity],
+      );
+    }
+    console.log(table.toString());
+  });
+}
+
